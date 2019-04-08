@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import * as material from '@material-ui/core';
+import { PropTypes } from 'prop-types';
 // import Paper from '@material-ui/core/Paper';
 // import AppBar from '@material-ui/core/AppBar';
 // import Typography from '@material-ui/core/Typography';
@@ -68,11 +69,12 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  setCity: PropTypes.func.isRequired,
+}
 
 const mapDispatchToPropsActions = dispatch => ({ 
   setCity: value => dispatch(setCity(value))
 });
 
-const AppConnected = connect(null, mapDispatchToPropsActions)(App);
-
-export default AppConnected;
+export default connect(null, mapDispatchToPropsActions)(App)
