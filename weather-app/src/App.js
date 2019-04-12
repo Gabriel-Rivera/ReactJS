@@ -13,6 +13,7 @@ import './App.css';
 const cities = [
   'China', 'London', 'Buenos Aires', 'Bogota', 'Washington', 'España'
 ];
+/* Prueba */
 
 class App extends Component {
   render() {
