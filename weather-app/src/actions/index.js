@@ -1,16 +1,20 @@
 import {url_base_forecast, api_key} from '../constans/api_url';
 import transformForecast from './../services/transformForecast';
+import getUrlWeatherByCity from './../services/getUrlWeatherByCity';
+import transformWeather from '../services/transformWeather';
 
 export const SET_CITY = 'SET_CITY';
 export const SET_FORECAST_DATA = 'SET_FORECAST_DATA';
 
-const setCity = payload => ({ 
-    type: SET_CITY, payload 
-});
+export const GET_WEATHER_CITY = 'GET_WEATHER_CITY';
+export const SET_WEATHER_CITY = 'SET_WEATHER_CITY';
 
-const setForecastData = payload => ({ 
-    type: SET_FORECAST_DATA, payload 
-});
+const setCity = payload => ({ type: SET_CITY, payload });
+const setForecastData = payload => ({ ype: SET_FORECAST_DATA, payload });
+const getWeatherCity = payload => ({type: GET_WEATHER_CITY, payload});
+const setWeatherCity = payload => ({type: SET_WEATHER_CITY, payload});
+
+
 
 export const setSelectedCity = payload => { 
     return dispatch =>{
@@ -29,5 +33,21 @@ export const setSelectedCity = payload => {
                     dispatch(setForecastData({city: payload, forecastData}));
                 }
             );
+    }
+}
+
+export const setWeather = payload => { 
+    return dispatch => {
+        payload.forEach(city => {
+            dispatch(getWeatherCity(city))
+            const api_weather = getUrlWeatherByCity(city);
+            fetch(api_weather).then(
+                resolve => {
+                    return resolve.json();
+                }).then(data => {                
+                    const newWeather = transformWeather(data);
+                    dispatch(setWeatherCity({city, newWeather}))
+                });
+        });
     }
 }
